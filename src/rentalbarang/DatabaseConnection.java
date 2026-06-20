@@ -18,7 +18,7 @@ public class DatabaseConnection {
             
             // Establish the connection
             conn = DriverManager.getConnection(url, user, password);
-            System.out.println("Connection to SQLite has been established!");
+            System.out.println("Connection to Hobby Hustle has been established!");
             
         } catch (SQLException e) {
             System.out.println("Database connection failed: " + e.getMessage());

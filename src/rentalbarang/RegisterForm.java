@@ -17,6 +17,9 @@ public class RegisterForm extends javax.swing.JFrame {
      */
     public RegisterForm() {
         initComponents();
+        
+        defPannel();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -29,196 +32,115 @@ public class RegisterForm extends javax.swing.JFrame {
     private void initComponents() {
 
         title = new javax.swing.JLabel();
-        nameInput = new javax.swing.JTextField();
-        passInput = new javax.swing.JPasswordField();
-        resgistButton = new javax.swing.JButton();
-        emailLabel = new javax.swing.JLabel();
-        passLabel = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        linkAnchor = new javax.swing.JLabel();
-        phoneInput = new javax.swing.JTextField();
-        emailInput = new javax.swing.JTextField();
-        adressInput = new javax.swing.JTextField();
-        nameLabel = new javax.swing.JLabel();
-        phoneLabel = new javax.swing.JLabel();
-        adressLabel = new javax.swing.JLabel();
-        jSeparator1 = new javax.swing.JSeparator();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        mainPannel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         title.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        title.setText("HOBBY HUSTLE");
+        title.setText("Neighbour Goods");
 
-        nameInput.addActionListener(this::nameInputActionPerformed);
+        jLabel1.setText("Click here to");
 
-        resgistButton.setText("REGISTER");
-        resgistButton.addActionListener(this::resgistButtonActionPerformed);
-
-        emailLabel.setText("Email:");
-
-        passLabel.setText("Password:");
-
-        jLabel1.setText("Already have an account?");
-
-        linkAnchor.setForeground(new java.awt.Color(51, 102, 255));
-        linkAnchor.setText("Click here!");
-        linkAnchor.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        linkAnchor.addMouseListener(new java.awt.event.MouseAdapter() {
+        jLabel2.setForeground(new java.awt.Color(51, 51, 255));
+        jLabel2.setText("login");
+        jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                linkAnchorMouseClicked(evt);
+                jLabel2MouseClicked(evt);
             }
         });
 
-        phoneInput.addActionListener(this::phoneInputActionPerformed);
+        jLabel3.setText("or");
 
-        emailInput.addActionListener(this::emailInputActionPerformed);
+        jLabel4.setForeground(new java.awt.Color(51, 51, 255));
+        jLabel4.setText("register");
+        jLabel4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel4MouseClicked(evt);
+            }
+        });
 
-        adressInput.addActionListener(this::adressInputActionPerformed);
-
-        nameLabel.setText("Name");
-
-        phoneLabel.setText("Phone number");
-
-        adressLabel.setText("Adress");
+        mainPannel.setLayout(new java.awt.GridLayout());
+        jScrollPane1.setViewportView(mainPannel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(68, 68, 68)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(emailInput, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
-                            .addComponent(emailLabel)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(nameInput)
-                                .addComponent(passInput, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
-                                .addComponent(phoneInput)
-                                .addComponent(adressInput))
-                            .addComponent(passLabel)
-                            .addComponent(nameLabel)
-                            .addComponent(phoneLabel)
-                            .addComponent(adressLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(115, 115, 115)
-                        .addComponent(title))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(123, 123, 123)
-                        .addComponent(resgistButton, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(79, 79, 79)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(linkAnchor)))
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addGap(92, 92, 92)
+                .addComponent(title)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(112, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4)
+                .addGap(124, 124, 124))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(59, 59, 59)
+                .addGap(52, 52, 52)
                 .addComponent(title)
-                .addGap(11, 11, 11)
-                .addComponent(nameLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(nameInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(emailLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(emailInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(passLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(passInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(7, 7, 7)
-                .addComponent(phoneLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(phoneInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(adressLabel)
-                .addGap(4, 4, 4)
-                .addComponent(adressInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(resgistButton)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(linkAnchor))
-                .addContainerGap(86, Short.MAX_VALUE))
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void nameInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameInputActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_nameInputActionPerformed
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+        LoginPannel defaultPannel = new LoginPannel();
+        mainPannel.removeAll();
+        mainPannel.setLayout(new java.awt.BorderLayout());
+        mainPannel.add(defaultPannel, java.awt.BorderLayout.CENTER);
+        mainPannel.revalidate();
+        mainPannel.repaint();
+    }//GEN-LAST:event_jLabel2MouseClicked
 
-    private void resgistButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resgistButtonActionPerformed
-       try (java.sql.Connection conn = DatabaseConnection.connect()) {
-        
-        if (conn != null) {
-            String sql = "INSERT INTO users (user_name, user_email, user_password, user_phone, user_adress, role) VALUES (?, ?, ?, ?, ?, ?)";
-            java.sql.PreparedStatement pstmt = conn.prepareStatement(sql);
-            
-            pstmt.setString(1, nameInput.getText());       
-            pstmt.setString(2, emailInput.getText());
-            pstmt.setString(3, String.valueOf(passInput.getPassword()));
-            pstmt.setString(4, phoneInput.getText());
-            pstmt.setString(5, adressInput.getText());
-            pstmt.setString(6, "user");   
-            
-            pstmt.executeUpdate();
-            
-        
-            javax.swing.JOptionPane.showMessageDialog(this, "Registration Successful!");
-            
-  
-            DashboardForm nextScreen = new DashboardForm();
-            nextScreen.setVisible(true);
-            nextScreen.setLocationRelativeTo(null); 
-            
-    
-            this.dispose(); 
-        }
-        
-    } catch (java.sql.SQLException e) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage());
-    }
-    }//GEN-LAST:event_resgistButtonActionPerformed
-
-    private void linkAnchorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_linkAnchorMouseClicked
-    // 1. Create an instance of your second JFrame Form
-    // (Replace 'SecondJFrame' with the actual name of your other file)
-    LoginForm nextScreen = new LoginForm();
-    
-    // 2. Make the new window visible
-    nextScreen.setVisible(true);
-    
-    // 3. Close or hide the current window so they don't stack
-    this.dispose();
-    }//GEN-LAST:event_linkAnchorMouseClicked
-
-    private void phoneInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phoneInputActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_phoneInputActionPerformed
-
-    private void emailInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailInputActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_emailInputActionPerformed
-
-    private void adressInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adressInputActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_adressInputActionPerformed
+    private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
+        RegisterPannel RegisterPannelShow = new RegisterPannel();
+        mainPannel.removeAll();
+        mainPannel.setLayout(new java.awt.BorderLayout());
+        mainPannel.add(RegisterPannelShow, java.awt.BorderLayout.CENTER);
+        mainPannel.revalidate();
+        mainPannel.repaint();
+    }//GEN-LAST:event_jLabel4MouseClicked
 
     /**
      * @param args the command line arguments
      */
+    
+    private void defPannel(){
+        LoginPannel defaultPannel = new LoginPannel();
+        mainPannel.removeAll();
+        mainPannel.setLayout(new java.awt.BorderLayout());
+        mainPannel.add(defaultPannel, java.awt.BorderLayout.CENTER);
+        mainPannel.revalidate();
+        mainPannel.repaint();
+    }
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -242,20 +164,12 @@ public class RegisterForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField adressInput;
-    private javax.swing.JLabel adressLabel;
-    private javax.swing.JTextField emailInput;
-    private javax.swing.JLabel emailLabel;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JLabel linkAnchor;
-    private javax.swing.JTextField nameInput;
-    private javax.swing.JLabel nameLabel;
-    private javax.swing.JPasswordField passInput;
-    private javax.swing.JLabel passLabel;
-    private javax.swing.JTextField phoneInput;
-    private javax.swing.JLabel phoneLabel;
-    private javax.swing.JButton resgistButton;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel mainPannel;
     private javax.swing.JLabel title;
     // End of variables declaration//GEN-END:variables
 }
