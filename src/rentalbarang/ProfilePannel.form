@@ -23,7 +23,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jLabel2" min="-2" pref="99" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
@@ -57,7 +57,8 @@
                   <Component id="dataEditButton" alignment="1" max="32767" attributes="0"/>
                   <Component id="userHistoryButton" alignment="0" max="32767" attributes="0"/>
                   <Component id="userListedItemButton" alignment="0" max="32767" attributes="0"/>
-                  <Component id="logOutButton" alignment="0" max="32767" attributes="0"/>
+                  <Component id="logOutButton" alignment="1" max="32767" attributes="0"/>
+                  <Component id="aboutUs" alignment="1" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -94,7 +95,9 @@
               <Component id="userListedItemButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="logOutButton" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="0" pref="127" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
+              <Component id="aboutUs" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="0" pref="58" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -133,6 +136,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="History"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="userHistoryButtonActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="userListedItemButton">
       <Properties>
@@ -143,6 +149,10 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Log out"/>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="logOutButtonMouseClicked"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="logOutButtonActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="phoneDisplay">
       <Properties>
@@ -159,6 +169,14 @@
         <Property name="text" type="java.lang.String" value="-"/>
         <Property name="verticalTextPosition" type="int" value="1"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="aboutUs">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="About us"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="aboutUsActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

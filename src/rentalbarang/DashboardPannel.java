@@ -60,47 +60,50 @@ public class DashboardPannel extends javax.swing.JPanel {
                 .addContainerGap(354, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
-    public void displayItems() {
-    cardHolderPannel.removeAll(); 
+     public void displayItems() {
+    cardHolderPannel.removeAll();
     cardHolderPannel.setLayout(new java.awt.GridLayout(0, 2, 10, 10));
-    
-    // 1. Update your SQL query to fetch ALL the columns you want to display
-    String sql = "SELECT item_name, item_price_per_day, item_status, item_condition, item_desc FROM item";
-    
+
+    String sql = "SELECT item_id, item_name, item_price_per_day, item_status, item_condition, item_desc FROM item";
+
     try (java.sql.Connection conn = DatabaseConnection.connect();
          java.sql.PreparedStatement pstmt = conn.prepareStatement(sql);
          java.sql.ResultSet rs = pstmt.executeQuery()) {
-         
-        while(rs.next()) {
-            String name = rs.getString("item_name");
-            double price = rs.getDouble("item_price_per_day");
-            String status = rs.getString("item_status");
-            String condition = rs.getString("item_condition");
-            String description = rs.getString("item_desc"); // Matches 'item_desc' from your table
-            
-            // Your dashboard card preview can stay simple with just name and price
-            DashboardItemCard card = new DashboardItemCard(name, price);
-            
-            // 2. Attach the click listener using your upgraded constructor!
+
+        while (rs.next()) {
+            final int itemId = rs.getInt("item_id");
+            final String itemName = rs.getString("item_name");
+            final double itemPrice = rs.getDouble("item_price_per_day");
+            final String itemStatus = rs.getString("item_status");
+            final String itemCondition = rs.getString("item_condition");
+            final String itemDesc = rs.getString("item_desc");
+
+            DashboardItemCard card = new DashboardItemCard(itemName, itemPrice);
+
+            // WIRE UP THE CLICK EVENT HERE
             card.addMouseListener(new java.awt.event.MouseAdapter() {
                 @Override
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
-                    // ✅ Pass all 5 arguments in the exact order your constructor demands them!
-                    itemDetailForm detailForm = new itemDetailForm(name, price, status, condition, description);
-                    detailForm.setVisible(true);
+                    // 1. Create the detail window, passing the clicked item's ID
+                    // (Change 'ItemDetailFrame' if your JForm class has a different name)
+                    itemDetailForm detailFrame = new itemDetailForm(itemId);
+                    
+                    // 2. Show the detail window
+                    detailFrame.setVisible(true);
                 }
             });
-            
+
             cardHolderPannel.add(card);
         }
-        
+
         cardHolderPannel.revalidate();
         cardHolderPannel.repaint();
-        
+
     } catch (java.sql.SQLException e) {
         javax.swing.JOptionPane.showMessageDialog(this, "Gagal memuat barang: " + e.getMessage());
     }
-    }
+}
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel cardHolderPannel;

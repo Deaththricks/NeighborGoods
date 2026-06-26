@@ -3,7 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package rentalbarang;
-
+import javax.swing.*;
+import java.awt.*;
 /**
  *
  * @author ASUS TUF
@@ -11,17 +12,127 @@ package rentalbarang;
 public class MainForm extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MainForm.class.getName());
-
+    private JButton notifButton;   // tombol 🔔
+    private JLabel  notifBadge;   // label merah angka unread
+    private Timer   notifTimer; 
     /**
      * Creates new form DashboardForm
      */
     public MainForm() {
         initComponents();
-        
+        buildNotifArea();  
         loadDefPannel();
-       
+        startNotifPolling();
     }
-
+    
+    private void buildNotifArea() {
+        // Ambil container utama (contentPane sudah pakai GroupLayout dari NetBeans)
+        // Cara paling aman tanpa menyentuh initComponents() adalah menambahkan
+        // komponen ke panel header secara programatik menggunakan layered approach.
+ 
+        // Buat tombol notif
+        notifButton = new JButton("🔔");
+        notifButton.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 14));
+        notifButton.setBorder(BorderFactory.createEmptyBorder(2, 6, 2, 6));
+        notifButton.setFocusPainted(false);
+        notifButton.setContentAreaFilled(false);
+        notifButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        notifButton.setToolTipText("Notifikasi");
+        notifButton.addActionListener(e -> notifButtonActionPerformed());
+ 
+        // Badge merah (ditumpuk di atas tombol pakai JLayeredPane)
+        notifBadge = new JLabel("0");
+        notifBadge.setFont(new Font("Segoe UI", Font.BOLD, 9));
+        notifBadge.setForeground(Color.WHITE);
+        notifBadge.setBackground(Color.RED);
+        notifBadge.setOpaque(true);
+        notifBadge.setHorizontalAlignment(SwingConstants.CENTER);
+        notifBadge.setBorder(BorderFactory.createEmptyBorder(1, 3, 1, 3));
+        notifBadge.setVisible(false); // sembunyikan dulu kalau 0
+ 
+        // ── Strategi penyisipan:
+        //    Kita bungkus notifButton + badge ke dalam satu JPanel berlapis,
+        //    lalu sisipkan ke contentPane menggunakan JLayeredPane overlay trick.
+        //    Cara paling sederhana untuk NetBeans: tambahkan ke JLayeredPane
+        //    yang sudah ada di JFrame.
+ 
+        JLayeredPane layeredPane = getLayeredPane();
+ 
+        // Posisi tombol notif: di sebelah kiri addItemButton
+        // addItemButton ada di pojok kanan atas dengan lebar 30px
+        // Kita letakkan notifButton 40px di kirinya
+        notifButton.setBounds(290, 6, 30, 29);
+        notifBadge.setBounds(308, 4, 16, 14);
+ 
+        layeredPane.add(notifButton, JLayeredPane.PALETTE_LAYER);
+        layeredPane.add(notifBadge,  JLayeredPane.MODAL_LAYER);   // modal = di atas palette
+ 
+        // Update badge pertama kali
+        refreshNotifBadge();
+    }
+    // ═══════════════════════════════════════════════════════════════════════
+    //  BAGIAN BARU 2 — Refresh badge (panggil ini dari mana saja)
+    // ═══════════════════════════════════════════════════════════════════════
+    public void refreshNotifBadge() {
+        int unread = NotificationPannel.countUnread(UserSession.getUserId());
+        if (unread > 0) {
+            notifBadge.setText(unread > 99 ? "99+" : String.valueOf(unread));
+            notifBadge.setVisible(true);
+        } else {
+            notifBadge.setVisible(false);
+        }
+    }
+ 
+    // ═══════════════════════════════════════════════════════════════════════
+    //  BAGIAN BARU 3 — Polling otomatis setiap 30 detik
+    // ═══════════════════════════════════════════════════════════════════════
+    private void startNotifPolling() {
+        notifTimer = new Timer(30_000, e -> refreshNotifBadge());
+        notifTimer.setRepeats(true);
+        notifTimer.start();
+    }
+ 
+    // ═══════════════════════════════════════════════════════════════════════
+    //  BAGIAN BARU 4 — Handler klik tombol notif
+    // ═══════════════════════════════════════════════════════════════════════
+    private void notifButtonActionPerformed() {
+        NotificationPannel notifPanel = new NotificationPannel();
+        mainPannel.removeAll();
+        mainPannel.setLayout(new java.awt.BorderLayout());
+        mainPannel.add(notifPanel, java.awt.BorderLayout.CENTER);
+        mainPannel.revalidate();
+        mainPannel.repaint();
+ 
+        // Reset gaya semua nav-button
+        resetAllNavButtons();
+ 
+        // Aktifkan style notifButton
+        notifButton.setForeground(Color.BLUE);
+        notifButton.setFont(new Font("Segoe UI Emoji", Font.BOLD, 14));
+    }
+ 
+    // ── Helper: reset style semua tombol navigasi ──────────────
+    private void resetAllNavButtons() {
+        homeButton.setBackground(Color.WHITE);
+        homeButton.setForeground(Color.BLACK);
+        homeButton.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+ 
+        searchButton.setBackground(Color.WHITE);
+        searchButton.setForeground(Color.BLACK);
+        searchButton.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+ 
+        profileButton.setBackground(Color.WHITE);
+        profileButton.setForeground(Color.BLACK);
+        profileButton.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+ 
+        addItemButton.setBackground(Color.WHITE);
+        addItemButton.setForeground(Color.BLACK);
+        addItemButton.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+ 
+        notifButton.setForeground(Color.BLACK);
+        notifButton.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 14));
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

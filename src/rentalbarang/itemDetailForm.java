@@ -4,28 +4,41 @@
  */
 package rentalbarang;
 
-/**
- *
- * @author ASUS TUF
- */
+import java.awt.Window;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
+import javax.swing.SwingUtilities;
+
 public class itemDetailForm extends javax.swing.JFrame {
     
+    private int currentItemId;
+    private double pricePerDay = 0.0;
+    private int    ownerUserId = -1;   // <-- BARU: simpan user_id pemilik barang
+    private String itemNameStr = "";   // <-- BARU: simpan nama barang untuk pesan notif
+    
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(itemDetailForm.class.getName());
-
     /**
      * Creates new form itemDetailForm
      */
-    public itemDetailForm( String name, double price, String status, String condition, String description) {
+    public itemDetailForm(int itemId) {
         initComponents();
+        this.currentItemId = itemId;
         this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        itemName.setText(name);
-        itemPrice.setText("Rp " + String.format("%,.0f", price) + " / day");
-        itemStatus.setText(status);
-        itemCondition.setText(condition);
-        itemDescription.setText(description);
-        // Centers the window on the user's screen
         this.setLocationRelativeTo(null);
+    
+    // Load data into your labels
+        loadItemDetails();
         
+        itemGetButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemGetButtonActionPerformed(evt);
+            }
+        });
     }
 
     /**
@@ -37,42 +50,51 @@ public class itemDetailForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jRadioButtonMenuItem1 = new javax.swing.JRadioButtonMenuItem();
-        ImageDisplay = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         itemName = new javax.swing.JLabel();
-        itemPrice = new javax.swing.JLabel();
-        itemStatus = new javax.swing.JLabel();
+        itemPricePerDay = new javax.swing.JLabel();
         itemCondition = new javax.swing.JLabel();
+        itemStatus = new javax.swing.JLabel();
+        itemGetButton = new javax.swing.JButton();
         itemDescription = new javax.swing.JLabel();
-        itemStatus1 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-
-        jRadioButtonMenuItem1.setSelected(true);
-        jRadioButtonMenuItem1.setText("jRadioButtonMenuItem1");
+        startDateField = new javax.swing.JTextField();
+        startFieldDate = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        ttlPrLbl = new javax.swing.JLabel();
+        rentDuration = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        rentTotalPrice = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        ImageDisplay.setText("INI GAMBAR");
-        ImageDisplay.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jLabel1.setText("jLabel1");
+        jLabel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        itemName.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         itemName.setText("NAME");
 
-        itemPrice.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        itemPrice.setText("PRICE");
+        itemPricePerDay.setText("PRICE PER DAY");
 
-        itemStatus.setText("STATUS");
+        itemCondition.setText("ITEM CONDITION");
 
-        itemCondition.setText("CONDITION");
+        itemStatus.setText("ITEM STATUS");
 
-        itemDescription.setText("DECS");
+        itemGetButton.setText("Get Item");
+        itemGetButton.addActionListener(this::itemGetButtonActionPerformed);
 
-        itemStatus1.setText("Status:");
+        itemDescription.setText("jLabel2");
 
-        jLabel8.setText("Condition:");
+        jLabel2.setText("Startdate (YYYY-MM-DD)");
 
-        jLabel9.setText("Description:");
+        jLabel3.setText("End date (YYYY-MM-DD)");
+
+        ttlPrLbl.setText("Total duration (DAYS):");
+
+        rentDuration.setText("DURATION");
+
+        jLabel6.setText("Total Price:");
+
+        rentTotalPrice.setText("TOTAL PRICE");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -81,62 +103,249 @@ public class itemDetailForm extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ImageDisplay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(itemName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(itemGetButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(startDateField)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE))
+                        .addGap(84, 84, 84)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(startFieldDate)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(itemPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(itemStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(itemCondition, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(itemStatus1, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(itemDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 166, Short.MAX_VALUE)))
+                            .addComponent(itemName, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(itemPricePerDay, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(itemCondition, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(itemStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(itemDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(ttlPrLbl, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(rentDuration, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(rentTotalPrice, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE))))
+                        .addGap(0, 16, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(ImageDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(itemName)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(itemPrice)
-                .addGap(29, 29, 29)
-                .addComponent(itemStatus1)
+                .addComponent(itemPricePerDay)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(itemCondition)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(itemStatus)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(itemCondition)
-                .addGap(4, 4, 4)
-                .addComponent(jLabel9)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(itemDescription)
-                .addContainerGap(68, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3))
+                .addGap(4, 4, 4)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(startDateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(startFieldDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ttlPrLbl)
+                    .addComponent(rentDuration))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(rentTotalPrice))
+                .addGap(56, 56, 56)
+                .addComponent(itemGetButton)
+                .addContainerGap(52, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void itemGetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemGetButtonActionPerformed
+        String startText = startDateField.getText().trim();
+        String endText   = startFieldDate.getText().trim();
+ 
+        if (startText.isEmpty() || endText.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Silakan masukkan tanggal Mulai dan Selesai!");
+            return;
+        }
+ 
+        try {
+            LocalDate startDate = LocalDate.parse(startText);
+            LocalDate endDate   = LocalDate.parse(endText);
+            LocalDate today     = LocalDate.now();
+ 
+            if (startDate.isBefore(today)) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Tanggal mulai sewa tidak boleh sebelum hari ini!");
+                return;
+            }
+            if (endDate.isBefore(startDate) || endDate.isEqual(startDate)) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Tanggal selesai sewa harus setelah tanggal mulai!");
+                return;
+            }
+ 
+            long   daysBetween     = ChronoUnit.DAYS.between(startDate, endDate);
+            double calculatedTotal = daysBetween * pricePerDay;
+ 
+            rentDuration.setText(daysBetween + " hari");
+            rentTotalPrice.setText("Rp " + String.format("%,.0f", calculatedTotal));
+ 
+            // ── SQL statements ────────────────────────────────────
+            String transactionSql = "INSERT INTO transaction "
+                    + "(item_id, renter_id, rent_start, rent_end, rent_duration, rent_price, transaction_status) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, 'Ongoing')";
+ 
+            String updateItemSql = "UPDATE item SET item_status = 'Rented' WHERE item_id = ?";
+ 
+            String notifSql = "INSERT INTO notification "
+                    + "(owner_id, renter_id, item_id, transaction_id, notif_message, is_read) "
+                    + "VALUES (?, ?, ?, ?, ?, 0)";
+ 
+            try (Connection conn = DatabaseConnection.connect()) {
+                conn.setAutoCommit(false);
+ 
+                try (PreparedStatement transStmt = conn.prepareStatement(
+                             transactionSql, PreparedStatement.RETURN_GENERATED_KEYS);
+                     PreparedStatement itemStmt  = conn.prepareStatement(updateItemSql);
+                     PreparedStatement notifStmt = conn.prepareStatement(notifSql)) {
+ 
+                    // 1. Insert transaksi
+                    transStmt.setInt(1, currentItemId);
+                    transStmt.setInt(2, UserSession.getUserId()); // pakai session, bukan hardcode 9
+                    transStmt.setDate(3, java.sql.Date.valueOf(startDate));
+                    transStmt.setDate(4, java.sql.Date.valueOf(endDate));
+                    transStmt.setInt(5, (int) daysBetween);
+                    transStmt.setDouble(6, calculatedTotal);
+                    transStmt.executeUpdate();
+ 
+                    // 2. Ambil transaction_id hasil INSERT
+                    int newTransactionId = -1;
+                    try (ResultSet generatedKeys = transStmt.getGeneratedKeys()) {
+                        if (generatedKeys.next()) {
+                            newTransactionId = generatedKeys.getInt(1);
+                        }
+                    }
+ 
+                    System.out.println("DEBUG newTransactionId = " + newTransactionId);
+                    System.out.println("DEBUG ownerUserId      = " + ownerUserId);
+                    System.out.println("DEBUG renterUserId     = " + UserSession.getUserId());
+                    System.out.println("DEBUG itemNameStr      = " + itemNameStr);
+ 
+                    // 3. Update status barang
+                    itemStmt.setInt(1, currentItemId);
+                    itemStmt.executeUpdate();
+ 
+                    // 4. Insert notifikasi ke pemilik barang
+                    if (ownerUserId != -1 && newTransactionId != -1) {
+                        String renterName = UserSession.getUsername();
+                        String pesan = renterName + " menyewa barang " + itemNameStr
+                                + " mulai " + startDate
+                                + " s/d " + endDate
+                                + " (" + daysBetween + " hari)"
+                                + " - Rp " + String.format("%,.0f", calculatedTotal);
+ 
+                        notifStmt.setInt(1, ownerUserId);
+                        notifStmt.setInt(2, UserSession.getUserId());
+                        notifStmt.setInt(3, currentItemId);
+                        notifStmt.setInt(4, newTransactionId);
+                        notifStmt.setString(5, pesan);
+                        notifStmt.executeUpdate();
+ 
+                        System.out.println("DEBUG notif berhasil dikirim ke owner: " + ownerUserId);
+                    } else {
+                        System.out.println("DEBUG notif SKIP — ownerUserId=" + ownerUserId + " transactionId=" + newTransactionId);
+                    }
+ 
+                    // 5. Commit semua sekaligus (transaksi + update item + notif)
+                    conn.commit();
+ 
+                    javax.swing.JOptionPane.showMessageDialog(this, "Sewa Berhasil! Silakan cek menu transaksi.");
+ 
+                    itemGetButton.setEnabled(false);
+                    itemStatus.setText("Rented");
+                    startDateField.setEnabled(false);
+                    startFieldDate.setEnabled(false);
+ 
+                } catch (SQLException ex) {
+                    conn.rollback();
+                    throw ex;
+                }
+            }
+        } catch (DateTimeParseException e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Format penulisan tanggal salah! Gunakan format YYYY-MM-DD\nContoh: 2026-06-25");
+        } catch (SQLException e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Transaksi gagal diproses sistem database: " + e.getMessage());
+        }
+    }//GEN-LAST:event_itemGetButtonActionPerformed
+    
+    private void loadItemDetails() {
+        String sql = "SELECT i.*, c.category_name FROM item i "
+                   + "JOIN category c ON i.category_id = c.category_id "
+                   + "WHERE i.item_id = ?";
+ 
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+ 
+            pstmt.setInt(1, currentItemId);
+ 
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    // Simpan untuk keperluan notifikasi
+                    itemNameStr = rs.getString("item_name");
+                    ownerUserId = rs.getInt("user_id");
+ 
+                    System.out.println("DEBUG loadItemDetails — ownerUserId=" + ownerUserId + " itemName=" + itemNameStr);
+ 
+                    itemName.setText(itemNameStr);
+                    itemCondition.setText("Kondisi: " + rs.getString("item_condition"));
+                    itemStatus.setText(rs.getString("item_status"));
+                    itemDescription.setText(rs.getString("item_desc"));
+ 
+                    this.pricePerDay = rs.getDouble("item_price_per_day");
+                    itemPricePerDay.setText("Rp " + String.format("%,.0f", this.pricePerDay) + " / hari");
+ 
+                    if ("Rented".equalsIgnoreCase(rs.getString("item_status"))) {
+                        itemGetButton.setEnabled(false);
+                        itemStatus.setText("Rented (Tidak Tersedia)");
+                        startDateField.setEnabled(false);
+                        startFieldDate.setEnabled(false);
+                    }
+                }
+            }
+         } catch (SQLException e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Gagal memuat detail barang: " + e.getMessage());
+        }
+    }
+
     /**
      * @param args the command line arguments
      */
-
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel ImageDisplay;
     private javax.swing.JLabel itemCondition;
     private javax.swing.JLabel itemDescription;
+    private javax.swing.JButton itemGetButton;
     private javax.swing.JLabel itemName;
-    private javax.swing.JLabel itemPrice;
+    private javax.swing.JLabel itemPricePerDay;
     private javax.swing.JLabel itemStatus;
-    private javax.swing.JLabel itemStatus1;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel rentDuration;
+    private javax.swing.JLabel rentTotalPrice;
+    private javax.swing.JTextField startDateField;
+    private javax.swing.JTextField startFieldDate;
+    private javax.swing.JLabel ttlPrLbl;
     // End of variables declaration//GEN-END:variables
 }

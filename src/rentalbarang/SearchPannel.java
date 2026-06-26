@@ -4,6 +4,10 @@
  */
 package rentalbarang;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 /**
  *
  * @author ASUS TUF
@@ -15,8 +19,26 @@ public class SearchPannel extends javax.swing.JPanel {
      */
     public SearchPannel() {
         initComponents();
-    }
+        jTextField1 = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane(jPanel1);
 
+        jButton1.setText("Search");
+        jButton1.addActionListener(this::jButton1ActionPerformed);
+        jPanel1.setLayout(new java.awt.GridLayout(0, 2, 10, 10));
+
+        this.setLayout(new java.awt.BorderLayout(10, 10));
+
+        javax.swing.JPanel topBar = new javax.swing.JPanel(new java.awt.BorderLayout(5, 0));
+        topBar.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 5, 10));
+        topBar.add(jTextField1, java.awt.BorderLayout.CENTER);
+        topBar.add(jButton1, java.awt.BorderLayout.EAST);
+
+        this.add(topBar, java.awt.BorderLayout.NORTH);
+        this.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -43,28 +65,26 @@ public class SearchPannel extends javax.swing.JPanel {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 132, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 168, Short.MAX_VALUE)
+            .addGap(0, 332, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1)
-                        .addGap(16, 16, 16))))
+                        .addComponent(jButton1)))
+                .addGap(16, 16, 16))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -73,14 +93,67 @@ public class SearchPannel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
-                .addGap(31, 31, 31)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(157, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+
+        String keyword = jTextField1.getText().trim();
+        if (keyword.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Masukkan nama barang!");
+            return;
+        }
+        searchItems(keyword);
+    }
+
+    private void searchItems(String keyword) {
+        jPanel1.removeAll();
+
+        String sql = "SELECT item_id, item_name, item_price_per_day FROM item WHERE item_name LIKE ?";
+
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, "%" + keyword + "%");
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                boolean hasResult = false;
+
+                while (rs.next()) {
+                    hasResult = true;
+
+                    final int itemId = rs.getInt("item_id");
+                    final String itemName = rs.getString("item_name");
+                    final double itemPrice = rs.getDouble("item_price_per_day");
+
+                    DashboardItemCard card = new DashboardItemCard(itemName, itemPrice);
+                    card.setPreferredSize(new java.awt.Dimension(150, 180));
+                    card.addMouseListener(new java.awt.event.MouseAdapter() {
+                        @Override
+                        public void mouseClicked(java.awt.event.MouseEvent evt) {
+                            new itemDetailForm(itemId).setVisible(true);
+                        }
+                    });
+
+                    jPanel1.add(card);
+                }
+
+                if (!hasResult) {
+                    javax.swing.JLabel noResult = new javax.swing.JLabel("Barang tidak ditemukan: \"" + keyword + "\"");
+                    noResult.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+                    jPanel1.add(noResult);
+                }
+            }
+
+        } catch (SQLException e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Gagal mencari barang: " + e.getMessage());
+        }
+
+        jPanel1.revalidate();
+        jPanel1.repaint();
     }//GEN-LAST:event_jButton1ActionPerformed
 
 

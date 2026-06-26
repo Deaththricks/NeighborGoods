@@ -79,12 +79,10 @@ public class addItemPannel extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextDesc = new javax.swing.JTextArea();
         jTextFullPrice = new javax.swing.JTextField();
-        jTextDepositPrice = new javax.swing.JTextField();
         jButtonSumitItem = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         cmbCategory = new javax.swing.JComboBox<>();
 
@@ -93,6 +91,7 @@ public class addItemPannel extends javax.swing.JPanel {
         jScrollPane1.setViewportView(jTextArea1);
 
         jLabel1.setText("UPLOAD IMAGE");
+        jLabel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jTextItemName.addActionListener(this::jTextItemNameActionPerformed);
 
@@ -101,8 +100,6 @@ public class addItemPannel extends javax.swing.JPanel {
         jScrollPane2.setViewportView(jTextDesc);
 
         jTextFullPrice.addActionListener(this::jTextFullPriceActionPerformed);
-
-        jTextDepositPrice.addActionListener(this::jTextDepositPriceActionPerformed);
 
         jButtonSumitItem.setText("Submit item");
         jButtonSumitItem.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -118,8 +115,6 @@ public class addItemPannel extends javax.swing.JPanel {
 
         jLabel4.setText("Input price");
 
-        jLabel5.setText("Input deposit");
-
         jLabel6.setText("Select Category");
 
         cmbCategory.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -130,26 +125,19 @@ public class addItemPannel extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(cmbCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonSumitItem, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addGap(18, 18, 18)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel2)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTextItemName, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel3)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel4)
-                                .addComponent(jTextFullPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel6)))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(165, 165, 165)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel5)
-                                .addComponent(jTextDepositPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel2)
+                        .addComponent(jTextItemName, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
+                        .addComponent(jLabel3)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
+                        .addComponent(jLabel4)
+                        .addComponent(jLabel6)
+                        .addComponent(jTextFullPrice)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(25, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -166,13 +154,9 @@ public class addItemPannel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5))
+                .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextDepositPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFullPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jTextFullPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -210,25 +194,6 @@ public class addItemPannel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jTextFullPriceActionPerformed
 
-    private void jTextDepositPriceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextDepositPriceActionPerformed
-        try{
-
-            Double.parseDouble(
-                    jTextDepositPrice.getText().trim()
-            );
-
-        }catch(NumberFormatException e){
-
-            javax.swing.JOptionPane.showMessageDialog(
-                    this,
-                    "Deposit harus berupa angka!"
-            );
-
-            jTextDepositPrice.requestFocus();
-
-        }
-    }//GEN-LAST:event_jTextDepositPriceActionPerformed
-
     private void jButtonSumitItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSumitItemActionPerformed
             String kategori =
             (String)cmbCategory.getSelectedItem();
@@ -248,17 +213,17 @@ public class addItemPannel extends javax.swing.JPanel {
     String itemName = jTextItemName.getText().trim();
     String itemDesc = jTextDesc.getText().trim();
     String itemPrice = jTextFullPrice.getText().trim();
-    String itemDeposit = jTextDepositPrice.getText().trim();
     String categoryName = (String) cmbCategory.getSelectedItem();
+    String condition = 
 
-    if (itemName.isEmpty() || itemDesc.isEmpty() || itemPrice.isEmpty() || itemDeposit.isEmpty()) {
+    if (itemName.isEmpty() || itemDesc.isEmpty() || itemPrice.isEmpty()) {
         javax.swing.JOptionPane.showMessageDialog(this, "Semua field wajib diisi!");
         return;
     }
 
     try {
         double price = Double.parseDouble(itemPrice);
-        double deposit = Double.parseDouble(itemDeposit);
+
 
         Connection conn = DatabaseConnection.connect();
 
@@ -284,9 +249,9 @@ public class addItemPannel extends javax.swing.JPanel {
         // 2. INSERT INTO THE ITEM TABLE MATCHING YOUR EXACT SCHEMA
         String sql = "INSERT INTO item "
                 + "(user_id, category_id, item_name, item_desc, "
-                + "item_price_per_day, item_deposit, item_condition, "
+                + "item_price_per_day, item_condition, "
                 + "item_status, item_image) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"; // 9 parameters
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)"; // 9 parameters
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setInt(1, UserSession.getUserId());
@@ -294,10 +259,9 @@ public class addItemPannel extends javax.swing.JPanel {
         pstmt.setString(3, itemName);
         pstmt.setString(4, itemDesc);
         pstmt.setDouble(5, price);
-        pstmt.setDouble(6, deposit);
-        pstmt.setString(7, "Baik");
-        pstmt.setString(8, "Available"); // Matches your enum('Available', 'Rented') precisely!
-        pstmt.setString(9, ""); // item_image empty string
+        pstmt.setString(6, "Baik");
+        pstmt.setString(7, "Available"); // Matches your enum('Available', 'Rented') precisely!
+        pstmt.setString(8, ""); // item_image empty string
 
         pstmt.executeUpdate();
 
@@ -308,7 +272,7 @@ public class addItemPannel extends javax.swing.JPanel {
         jTextItemName.setText("");
         jTextDesc.setText("");
         jTextFullPrice.setText("");
-        jTextDepositPrice.setText("");
+        
         
         pstmt.close();
         conn.close();
@@ -329,12 +293,10 @@ public class addItemPannel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextDepositPrice;
     private javax.swing.JTextArea jTextDesc;
     private javax.swing.JTextField jTextFullPrice;
     private javax.swing.JTextField jTextItemName;

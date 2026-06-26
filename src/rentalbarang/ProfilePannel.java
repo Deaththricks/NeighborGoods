@@ -40,6 +40,7 @@ public class ProfilePannel extends javax.swing.JPanel {
         phoneDisplay = new javax.swing.JLabel();
         adressLabel = new javax.swing.JLabel();
         adressDisplay = new javax.swing.JLabel();
+        aboutUs = new javax.swing.JButton();
 
         jLabel3.setText("jLabel3");
 
@@ -60,10 +61,17 @@ public class ProfilePannel extends javax.swing.JPanel {
         dataEditButton.addActionListener(this::dataEditButtonActionPerformed);
 
         userHistoryButton.setText("History");
+        userHistoryButton.addActionListener(this::userHistoryButtonActionPerformed);
 
         userListedItemButton.setText("Show your listed item");
 
         logOutButton.setText("Log out");
+        logOutButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logOutButtonMouseClicked(evt);
+            }
+        });
+        logOutButton.addActionListener(this::logOutButtonActionPerformed);
 
         phoneDisplay.setText("Phone Num");
 
@@ -71,6 +79,9 @@ public class ProfilePannel extends javax.swing.JPanel {
 
         adressDisplay.setText("-");
         adressDisplay.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+
+        aboutUs.setText("About us");
+        aboutUs.addActionListener(this::aboutUsActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -102,7 +113,8 @@ public class ProfilePannel extends javax.swing.JPanel {
                     .addComponent(dataEditButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(userHistoryButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(userListedItemButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(logOutButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(logOutButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(aboutUs, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -133,7 +145,9 @@ public class ProfilePannel extends javax.swing.JPanel {
                 .addComponent(userListedItemButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(logOutButton)
-                .addGap(0, 127, Short.MAX_VALUE))
+                .addGap(46, 46, 46)
+                .addComponent(aboutUs)
+                .addGap(0, 58, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
     private void sessionDataCollect(){
@@ -154,8 +168,32 @@ public class ProfilePannel extends javax.swing.JPanel {
             
     }//GEN-LAST:event_dataEditButtonMouseClicked
 
+    private void logOutButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logOutButtonMouseClicked
+        UserSession.clearSession();
+        javax.swing.JOptionPane.showMessageDialog(this, "You are logged out.");
+        RegisterForm nextScreen = new RegisterForm();
+            nextScreen.setVisible(true);
+            nextScreen.setLocationRelativeTo(null);
+    }//GEN-LAST:event_logOutButtonMouseClicked
+
+    private void logOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_logOutButtonActionPerformed
+
+    private void userHistoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userHistoryButtonActionPerformed
+            HistoryForm historyScreen = new HistoryForm();
+            historyScreen.setVisible(true);
+    }//GEN-LAST:event_userHistoryButtonActionPerformed
+
+    private void aboutUsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutUsActionPerformed
+        AboutUsForm AUS = new AboutUsForm();
+            AUS.setVisible(true);
+            nextScreen.setLocationRelativeTo(null);
+    }//GEN-LAST:event_aboutUsActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton aboutUs;
     private javax.swing.JLabel adressDisplay;
     private javax.swing.JLabel adressLabel;
     private javax.swing.JButton dataEditButton;
